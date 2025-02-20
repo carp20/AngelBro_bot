@@ -6,8 +6,16 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Random;
+
+import static java.time.chrono.JapaneseEra.values;
+import static org.example.PokerCards.diamond;
+
 public class Bot extends TelegramLongPollingBot {
 
+    Random random = new Random();
     @Override
     public String getBotUsername() {
         return "AngelBro_bot";
@@ -35,6 +43,22 @@ public class Bot extends TelegramLongPollingBot {
                 sendText(id,"В данный момент эта функция недоступна. Причина: отсутствие информации," +
                         " которую можно было бы выдавать при использовании данной команды.\n" +
                         "Для получения основной информации о боте, используйте /start");
+            }
+            else if (msg.getText().equals("/play")) {
+                int i = random.nextInt(1, 9) + 5;
+                Identify identify = new Identify(diamond, i);
+                if(identify.isClub){
+                    sendText(id, "Поздравляем, тебе выпала карта треф"+i);
+                }
+                if(identify.isDiamond){
+                    sendText(id, "Поздравляем, тебе выпала карта бубен"+i);
+                }
+                if(identify.isHeart){
+                    sendText(id, "Поздравляем, тебе выпала карта червь"+i);
+                }
+                if(identify.isSpades){
+                    sendText(id, "Поздравляем, тебе выпала карта пики"+i);
+                }
             }
             else{
                 copyMessage(id, msg.getMessageId());
