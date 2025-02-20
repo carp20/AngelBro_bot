@@ -42,6 +42,7 @@ public class Bot extends TelegramLongPollingBot {
 
 
         }
+        System.out.println("Пользователь " + id + " отправил сообщение боту в лс: " + msg.getText());
     }
 
     public void sendText(Long who, String what) {
