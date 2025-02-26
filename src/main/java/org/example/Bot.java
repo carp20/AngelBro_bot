@@ -6,12 +6,11 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Random;
 
-import static java.time.chrono.JapaneseEra.values;
-import static org.example.PokerCards.diamond;
+import static org.example.PokerCard.club;
 
 public class Bot extends TelegramLongPollingBot {
 
@@ -30,7 +29,7 @@ public class Bot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         var msg = update.getMessage();
         var user = msg.getFrom();
-        var id = user.getId();
+        long id = user.getId();
 
 
         if (msg.isCommand()) {
@@ -45,19 +44,36 @@ public class Bot extends TelegramLongPollingBot {
                         "Для получения основной информации о боте, используйте /start");
             }
             else if (msg.getText().equals("/play")) {
-                int i = random.nextInt(1, 9) + 5;
-                Identify identify = new Identify(diamond, i);
+                PokerCard[] pokerCard = PokerCard.values();
+                String pokerCards = Arrays.toString(pokerCard);
+                System.out.println(pokerCards);
+
+                int i = random.nextInt(6, 15);
+                System.out.println("Создано случайное число i " + i);
+                int iI = random.nextInt(1,5);
+                System.out.println("Создано случайное число iI " + iI);
+
+                PokerGame identify = new PokerGame(pokerCard[iI], i);
+                System.out.println("Создан экземпляр класса PokerGame");
                 if(identify.isClub){
-                    sendText(id, "Поздравляем, тебе выпала карта треф"+i);
+                    sendText(id, "Поздравляем, тебе выпала карта треф "+i);
+                    System.out.println("Прошла проверка isClub");
                 }
-                if(identify.isDiamond){
-                    sendText(id, "Поздравляем, тебе выпала карта бубен"+i);
+                else if(identify.isDiamond){
+                    sendText(id, "Поздравляем, тебе выпала карта бубен "+i);
+                    System.out.println("Прошла проверка isDiamond");
                 }
-                if(identify.isHeart){
-                    sendText(id, "Поздравляем, тебе выпала карта червь"+i);
+                else if(identify.isHeart){
+                    sendText(id, "Поздравляем, тебе выпала карта червь "+i);
+                    System.out.println("Прошла проверка isHeart");
                 }
-                if(identify.isSpades){
-                    sendText(id, "Поздравляем, тебе выпала карта пики"+i);
+                else if(identify.isSpades){
+                    sendText(id, "Поздравляем, тебе выпала карта пики "+i);
+                    System.out.println("Прошла проверка isSpades");
+                }
+                else{
+                    sendText(id, "Произошла какая-то ошибка! Повторите попытку позже!");
+                    System.out.println("Прошла ошибка");
                 }
             }
             else{

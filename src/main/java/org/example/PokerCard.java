@@ -1,5 +1,5 @@
 package org.example;
 
-public enum PokerCards {
+public enum PokerCard {
     club, diamond, heart, spades;
 }
