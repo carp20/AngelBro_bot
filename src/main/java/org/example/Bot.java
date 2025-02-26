@@ -80,7 +80,7 @@ public class Bot extends TelegramLongPollingBot {
                 }
                 else {
                     sendText(id,"У Вас нет прав использовать эту команду!");
-                    System.out.println("Пользователь " + id + " попыталсяиспользовать команду /play, но не смог (не тот id)");
+                    System.out.println("Пользователь " + id + " попытался использовать команду /play, но не смог (не тот id)");
                 }
             }
 
