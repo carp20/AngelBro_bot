@@ -36,7 +36,7 @@ public class Bot extends TelegramLongPollingBot {
             if (msg.getText().equals("/start")){
                 sendText(id,"Привет, я - AngelBro_bot. Я создан для того, что бы в будущем можно было играть в " +
                         "покер онлайн. Реализация самой простой игры в покер ожидается на версии 0.3(Pre-alfa)." +
-                        "Настоящая версия бота: 0.1.5");
+                        "Настоящая версия бота: 0.2.0");
             }
             else if (msg.getText().equals("/help")){
                 sendText(id,"В данный момент эта функция недоступна. Причина: отсутствие информации," +
@@ -50,7 +50,7 @@ public class Bot extends TelegramLongPollingBot {
 
                 int i = random.nextInt(6, 15);
                 System.out.println("Создано случайное число i " + i);
-                int iI = random.nextInt(1,5);
+                int iI = random.nextInt(0,4);
                 System.out.println("Создано случайное число iI " + iI);
 
                 PokerGame identify = new PokerGame(pokerCard[iI], i);
