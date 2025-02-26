@@ -33,6 +33,7 @@ public class Bot extends TelegramLongPollingBot {
 
 
         if (msg.isCommand()) {
+            System.out.println("Пользователь " + id + " отправил сообщение боту в лс: " + msg.getText());
             if (msg.getText().equals("/start")){
                 sendText(id,"Привет, я - AngelBro_bot. Я создан для того, что бы в будущем можно было играть в " +
                         "покер онлайн. Реализация самой простой игры в покер ожидается на версии 0.3(Pre-alfa)." +
@@ -44,45 +45,51 @@ public class Bot extends TelegramLongPollingBot {
                         "Для получения основной информации о боте, используйте /start");
             }
             else if (msg.getText().equals("/play")) {
-                PokerCard[] pokerCard = PokerCard.values();
-                String pokerCards = Arrays.toString(pokerCard);
-                System.out.println(pokerCards);
+                if(id==1966262220 || id==7519531395L || id==5809236702L) {
+                    PokerCard[] pokerCard = PokerCard.values();
+                    String pokerCards = Arrays.toString(pokerCard);
+                    System.out.println(pokerCards);
 
-                int i = random.nextInt(6, 15);
-                System.out.println("Создано случайное число i " + i);
-                int iI = random.nextInt(0,4);
-                System.out.println("Создано случайное число iI " + iI);
+                    int i = random.nextInt(6, 15);
+                    System.out.println("Создано случайное число i " + i);
+                    int iI = random.nextInt(0, 4);
+                    System.out.println("Создано случайное число iI " + iI);
 
-                PokerGame identify = new PokerGame(pokerCard[iI], i);
-                System.out.println("Создан экземпляр класса PokerGame");
-                if(identify.isClub){
-                    sendText(id, "Поздравляем, тебе выпала карта треф "+i);
-                    System.out.println("Прошла проверка isClub");
+                    PokerGame identify = new PokerGame(pokerCard[iI], i);
+                    System.out.println("Создан экземпляр класса PokerGame");
+                    if (identify.isClub) {
+                        sendText(id, "Поздравляем, тебе выпала карта треф " + i);
+                        System.out.println("Прошла проверка isClub");
+                    }
+                    else if (identify.isDiamond) {
+                        sendText(id, "Поздравляем, тебе выпала карта бубен " + i);
+                        System.out.println("Прошла проверка isDiamond");
+                    }
+                    else if (identify.isHeart) {
+                        sendText(id, "Поздравляем, тебе выпала карта червь " + i);
+                        System.out.println("Прошла проверка isHeart");
+                    }
+                    else if (identify.isSpades) {
+                        sendText(id, "Поздравляем, тебе выпала карта пики " + i);
+                        System.out.println("Прошла проверка isSpades");
+                    }
+                    else {
+                        sendText(id, "Произошла какая-то ошибка! Повторите попытку позже!");
+                        System.out.println("Прошла ошибка");
+                    }
                 }
-                else if(identify.isDiamond){
-                    sendText(id, "Поздравляем, тебе выпала карта бубен "+i);
-                    System.out.println("Прошла проверка isDiamond");
-                }
-                else if(identify.isHeart){
-                    sendText(id, "Поздравляем, тебе выпала карта червь "+i);
-                    System.out.println("Прошла проверка isHeart");
-                }
-                else if(identify.isSpades){
-                    sendText(id, "Поздравляем, тебе выпала карта пики "+i);
-                    System.out.println("Прошла проверка isSpades");
-                }
-                else{
-                    sendText(id, "Произошла какая-то ошибка! Повторите попытку позже!");
-                    System.out.println("Прошла ошибка");
+                else {
+                    sendText(id,"У Вас нет прав использовать эту команду!");
+                    System.out.println("Пользователь " + id + " попыталсяиспользовать команду /play, но не смог (не тот id)");
                 }
             }
+
             else{
                 copyMessage(id, msg.getMessageId());
             }
 
 
         }
-        System.out.println("Пользователь " + id + " отправил сообщение боту в лс: " + msg.getText());
     }
 
     public void sendText(Long who, String what) {
