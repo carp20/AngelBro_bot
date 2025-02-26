@@ -48,7 +48,6 @@ public class Bot extends TelegramLongPollingBot {
                 if(id==1966262220 || id==7519531395L || id==5809236702L) {
                     PokerCard[] pokerCard = PokerCard.values();
                     String pokerCards = Arrays.toString(pokerCard);
-                    System.out.println(pokerCards);
 
                     int i = random.nextInt(6, 15);
                     System.out.println("Создано случайное число i " + i);
