@@ -6,15 +6,17 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Random;
 
-import static org.example.PokerCard.club;
+import static java.time.chrono.JapaneseEra.values;
+import static org.example.PokerCard.diamond;
 
 public class Bot extends TelegramLongPollingBot {
 
     Random random = new Random();
+    long a = 5510037023L;
     @Override
     public String getBotUsername() {
         return "AngelBro_bot";
