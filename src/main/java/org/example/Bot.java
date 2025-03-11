@@ -76,28 +76,41 @@ public class Bot extends TelegramLongPollingBot {
             PokerCard[] pokerCard = PokerCard.values();
             String pokerCards = Arrays.toString(pokerCard);
 
-            for(int index = 0; index<2; index++){
-                int i = random.nextInt(6, 15);
+            for(int index = 0; index<2; index++) {
+                int randomRank = random.nextInt(6, 15);
                 int iI = random.nextInt(0, 4);
+                String i = null;
+
+                if (randomRank <= 10) {
+                    i = Integer.toString(randomRank);
+                }
+                else if(randomRank==11){
+                    i = "валет";
+                }
+                else if(randomRank==12){
+                    i = "дама";
+                }
+                else if(randomRank==13){
+                    i = "король";
+                }
+                else if(randomRank==14){
+                    i = "туз";
+                }
 
                 PokerGame identify = new PokerGame(pokerCard[iI], i);
                 if (identify.isClub) {
                     sendText(id, "Поздравляем, тебе выпала карта треф " + i);
                     System.out.println("Пользователю " + id + " выпала карта треф " + i);
-                }
-                else if (identify.isDiamond) {
+                } else if (identify.isDiamond) {
                     sendText(id, "Поздравляем, тебе выпала карта бубен " + i);
                     System.out.println("Пользователю " + id + " выпала карта бубен " + i);
-                }
-                else if (identify.isHeart) {
+                } else if (identify.isHeart) {
                     sendText(id, "Поздравляем, тебе выпала карта червь " + i);
                     System.out.println("Пользователю " + id + " выпала карта червь " + i);
-                }
-                else if (identify.isSpades) {
+                } else if (identify.isSpades) {
                     sendText(id, "Поздравляем, тебе выпала карта пики " + i);
                     System.out.println("Пользователю " + id + " выпала карта пики " + i);
-                }
-                else {
+                } else {
                     sendText(id, "Произошла какая-то ошибка! Повторите попытку позже!");
                     System.out.println("Прошла ошибка");
                 }
