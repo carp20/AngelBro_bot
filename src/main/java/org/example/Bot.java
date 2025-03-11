@@ -45,49 +45,12 @@ public class Bot extends TelegramLongPollingBot {
                         "Для получения основной информации о боте, используйте /start");
             }
             else if (msg.getText().equals("/play")) {
-                if(id==1966262220 || id==7519531395L || id==5809236702L) {
-                    PokerCard[] pokerCard = PokerCard.values();
-                    String pokerCards = Arrays.toString(pokerCard);
-
-                    int i = random.nextInt(6, 15);
-                    System.out.println("Создано случайное число i " + i);
-                    int iI = random.nextInt(0, 4);
-                    System.out.println("Создано случайное число iI " + iI);
-
-                    PokerGame identify = new PokerGame(pokerCard[iI], i);
-                    System.out.println("Создан экземпляр класса PokerGame");
-                    if (identify.isClub) {
-                        sendText(id, "Поздравляем, тебе выпала карта треф " + i);
-                        System.out.println("Прошла проверка isClub");
-                    }
-                    else if (identify.isDiamond) {
-                        sendText(id, "Поздравляем, тебе выпала карта бубен " + i);
-                        System.out.println("Прошла проверка isDiamond");
-                    }
-                    else if (identify.isHeart) {
-                        sendText(id, "Поздравляем, тебе выпала карта червь " + i);
-                        System.out.println("Прошла проверка isHeart");
-                    }
-                    else if (identify.isSpades) {
-                        sendText(id, "Поздравляем, тебе выпала карта пики " + i);
-                        System.out.println("Прошла проверка isSpades");
-                    }
-                    else {
-                        sendText(id, "Произошла какая-то ошибка! Повторите попытку позже!");
-                        System.out.println("Прошла ошибка");
-                    }
-                }
-                else {
-                    sendText(id,"У Вас нет прав использовать эту команду!");
-                    System.out.println("Пользователь " + id + " попытался использовать команду /play, но не смог (не тот id)");
-                }
+                play(id);
             }
 
             else{
                 copyMessage(id, msg.getMessageId());
             }
-
-
         }
     }
 
@@ -106,6 +69,43 @@ public class Bot extends TelegramLongPollingBot {
             execute(cm);
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);
+        }
+    }
+    public void play(Long id){
+        if(id==1966262220 || id==7519531395L || id==5809236702L) {
+            PokerCard[] pokerCard = PokerCard.values();
+            String pokerCards = Arrays.toString(pokerCard);
+
+            for(int index = 0; index<2; index++){
+                int i = random.nextInt(6, 15);
+                int iI = random.nextInt(0, 4);
+
+                PokerGame identify = new PokerGame(pokerCard[iI], i);
+                if (identify.isClub) {
+                    sendText(id, "Поздравляем, тебе выпала карта треф " + i);
+                    System.out.println("Пользователю " + id + " выпала карта треф " + i);
+                }
+                else if (identify.isDiamond) {
+                    sendText(id, "Поздравляем, тебе выпала карта бубен " + i);
+                    System.out.println("Пользователю " + id + " выпала карта бубен " + i);
+                }
+                else if (identify.isHeart) {
+                    sendText(id, "Поздравляем, тебе выпала карта червь " + i);
+                    System.out.println("Пользователю " + id + " выпала карта червь " + i);
+                }
+                else if (identify.isSpades) {
+                    sendText(id, "Поздравляем, тебе выпала карта пики " + i);
+                    System.out.println("Пользователю " + id + " выпала карта пики " + i);
+                }
+                else {
+                    sendText(id, "Произошла какая-то ошибка! Повторите попытку позже!");
+                    System.out.println("Прошла ошибка");
+                }
+            }
+        }
+        else {
+            sendText(id,"У Вас нет прав использовать эту команду!");
+            System.out.println("Пользователь " + id + " попытался использовать команду /play, но не смог (не тот id)");
         }
     }
 }
