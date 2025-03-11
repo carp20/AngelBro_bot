@@ -5,14 +5,14 @@ public class PokerGame {
 
     public PokerCard suit;
 
-    public int rank;
+    public String rank;
 
     boolean isClub;
     boolean isDiamond;
     boolean isHeart;
     boolean isSpades;
 
-    public PokerGame(PokerCard suit, int rank) {
+    public PokerGame(PokerCard suit, String rank) {
         this.suit = suit;
         this.rank = rank;
         String suit2 = suit.toString();
@@ -26,7 +26,7 @@ public class PokerGame {
         return suit;
     }
 
-    public int getRank() {
+    public String getRank() {
         return rank;
     }
 
