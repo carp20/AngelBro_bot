@@ -47,7 +47,14 @@ public class Bot extends TelegramLongPollingBot {
             else if (msg.getText().equals("/play")) {
                 play(id);
             }
-
+            else if (msg.getText().equals("/getName")) {
+                System.out.println(update.getMessage().getFrom());
+            }
+            else if (msg.getText().equals("playSolo")) {
+                while (true){
+                    play(7287242445L);
+                }
+            }
             else{
                 copyMessage(id, msg.getMessageId());
             }
@@ -188,8 +195,10 @@ public class Bot extends TelegramLongPollingBot {
         String json = gson.toJson(object);
         String filePath = "log.json";
 
-        try (FileWriter writer = new FileWriter(filePath)) {
+        try (FileWriter writer = new FileWriter(filePath, true)) {
+            writer.append("\n");
             writer.write(json);
+            writer.flush();
         } catch (IOException e) {
             System.err.println("Ошибка записи в файл: " + e.getMessage());
         }
