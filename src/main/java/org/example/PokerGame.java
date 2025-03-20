@@ -7,19 +7,25 @@ public class PokerGame {
 
     public String rank;
 
-    boolean isClub;
-    boolean isDiamond;
-    boolean isHeart;
-    boolean isSpades;
+    public boolean isClub() {
+        return suit.equals(PokerCard.club);
+    }
+
+    public boolean isDiamond() {
+        return suit.equals(PokerCard.diamond);
+    }
+
+    public boolean isHeart() {
+        return suit.equals(PokerCard.heart);
+    }
+
+    public boolean isSpades() {
+        return suit.equals(PokerCard.spades);
+    }
 
     public PokerGame(PokerCard suit, String rank) {
         this.suit = suit;
         this.rank = rank;
-        String suit2 = suit.toString();
-        isClub = suit2.equals("club");
-        isDiamond = suit2.equals("diamond");
-        isHeart = suit2.equals("heart");
-        isSpades = suit2.equals("spades");
     }
 
     public PokerCard getSuit() {
