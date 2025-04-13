@@ -51,10 +51,10 @@ public class Bot extends TelegramLongPollingBot {
                     PokerGame pokerGame = new PokerGame();
                     pokerGame.startGame();
                     sendText(id, "Игра началась! Общие карты: " + pokerGame.getCommunityCards() + ". " +
-                            "\nВаши карты: " + pokerGame.getYourCards(id) + ". " +
+                            "\nВаши карты: " + pokerGame.getYourCards() + ". " +
                             "\nКарты бота: " + pokerGame.getBotCards() + ". ");
                     saveGson("Общие карты: " + pokerGame.getCommunityCards() + ". ");
-                    saveGson("Карты пользователя " + id + ": " + pokerGame.getYourCards(id) + ". ");
+                    saveGson("Карты пользователя " + id + ": " + pokerGame.getYourCards() + ". ");
                     saveGson("Карты бота: " + pokerGame.getBotCards() + ". ");
                 }
 

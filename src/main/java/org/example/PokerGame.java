@@ -32,7 +32,7 @@ public class PokerGame {
         return communityCards;
     }
 
-    public List<Card> getYourCards(Long id){
+    public List<Card> getYourCards(){
         return player.getHand();
     }
 

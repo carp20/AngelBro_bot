@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommunityPokerGame {
+    private Player player;
     private List<Player> players;
     private Deck deck;
     private List<Card> communityCards;
