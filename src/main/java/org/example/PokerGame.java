@@ -1,40 +1,42 @@
 package org.example;
 
+import java.util.ArrayList;
+import java.util.List;
 
 public class PokerGame {
+    private Player player;
+    private Player bot;
+    private Deck deck;
+    private List<Card> communityCards;
 
-    public PokerCard suit;
-
-    public String rank;
-
-    public boolean isClub() {
-        return suit.equals(PokerCard.club);
+    public PokerGame() {
+        bot = new Player("bot");
+        player = new Player("player");
+        deck = new Deck();
+        communityCards = new ArrayList<>();
     }
 
-    public boolean isDiamond() {
-        return suit.equals(PokerCard.diamond);
+    public void startGame() {
+        player.addCard(deck.drawCard());
+        player.addCard(deck.drawCard());
+
+        bot.addCard(deck.drawCard());
+        bot.addCard(deck.drawCard());
+
+        for (int i = 0; i < 5; i++) {
+            communityCards.add(deck.drawCard());
+        }
     }
 
-    public boolean isHeart() {
-        return suit.equals(PokerCard.heart);
+    public List<Card> getCommunityCards() {
+        return communityCards;
     }
 
-    public boolean isSpades() {
-        return suit.equals(PokerCard.spades);
+    public List<Card> getYourCards(Long id){
+        return player.getHand();
     }
 
-    public PokerGame(PokerCard suit, String rank) {
-        this.suit = suit;
-        this.rank = rank;
+    public List<Card> getBotCards(){
+        return bot.getHand();
     }
-
-    public PokerCard getSuit() {
-        return suit;
-    }
-
-    public String getRank() {
-        return rank;
-    }
-
-
 }
