@@ -32,11 +32,16 @@ public class PokerGame {
         return communityCards;
     }
 
-    public List<Card> getYourCards(){
+    public List<Card> getCards(Player player){
         return player.getHand();
     }
 
-    public List<Card> getBotCards(){
-        return bot.getHand();
+    public Player getPlayer(){
+        return player;
     }
+
+    public Player getBot(){
+        return bot;
+    }
+
 }

@@ -9,11 +9,14 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Bot extends TelegramLongPollingBot {
 
     Random random = new Random();
+    Scanner scanner = new Scanner(System.in);
 
     @Override
     public String getBotUsername() {
@@ -22,7 +25,7 @@ public class Bot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "7287242445:AAGzxvATcPDI7fb3CDlJKWLDj9i_tJG7pXs";
+        return "7287242445:AAGzxvATcPDI7fb3CDlJKWLDj9i_tJG7pXc";
     }
 
     @Override
@@ -38,7 +41,7 @@ public class Bot extends TelegramLongPollingBot {
             if(msg.getText().equals("/start")) {
                 sendText(id, "Привет, я - AngelBro_bot. Я создан для того, что бы в будущем можно было играть в " +
                         "покер онлайн. Реализация самой простой игры в покер ожидается на версии 0.3(Pre-alfa)." +
-                        "Настоящая версия бота: 0.2.2");
+                        "Настоящая версия бота: 0.2.3");
             }
             else if(msg.getText().equals("/help")) {
                 sendText(id, "В данный момент эта функция недоступна. Причина: отсутствие информации," +
@@ -47,17 +50,25 @@ public class Bot extends TelegramLongPollingBot {
             }
             else if(msg.getText().equals("/play")) {
 
-                if(id == 7519531395L) {
+                if(id == 7287242445L) {
                     PokerGame pokerGame = new PokerGame();
                     pokerGame.startGame();
                     sendText(id, "Игра началась! Общие карты: " + pokerGame.getCommunityCards() + ". " +
-                            "\nВаши карты: " + pokerGame.getYourCards() + ". " +
-                            "\nКарты бота: " + pokerGame.getBotCards() + ". ");
-                    saveGson("Общие карты: " + pokerGame.getCommunityCards() + ". ");
-                    saveGson("Карты пользователя " + id + ": " + pokerGame.getYourCards() + ". ");
-                    saveGson("Карты бота: " + pokerGame.getBotCards() + ". ");
-                }
+                            "\nВаши карты: " + pokerGame.getCards(pokerGame.getPlayer()) + ". ");
 
+                    saveGson("Общие карты: " + pokerGame.getCommunityCards() + ". ");
+                    saveGson("Карты пользователя " + id + ": " + pokerGame.getCards(pokerGame.getPlayer()) + ". ");
+                    saveGson("Карты бота: " + pokerGame.getCards(pokerGame.getBot()) + ". ");
+
+                    sendText(id, "Хотите сделать ставку (если да, то кол-во фишек, иначе введите 0)?");
+                    int answer = scanner.nextInt();
+                    if(answer!=0){
+
+                    }
+                    else{
+                        sendText(id, "Игра закончена! Для новой игры введите /play");
+                    }
+                }
                 else {
                     sendText(id, "У Вас нету прав на использование этой команды!");
                 }
@@ -89,30 +100,6 @@ public class Bot extends TelegramLongPollingBot {
         }
     }
 
-    public String getRank(int randomRank) {
-        String i = null;
-        if (randomRank <= 10) {
-            i = Integer.toString(randomRank);
-        }
-        else if (randomRank == 11) {
-            i = "валет";
-            }
-        else if (randomRank == 12) {
-            i = "дама";
-            }
-        else if (randomRank == 13) {
-            i = "король";
-            }
-        else if (randomRank == 14) {
-            i = "туз";
-            }
-        else {
-            return null;
-        }
-
-        return i;
-    }
-
     public void saveGson(Object object){
         Gson gson = new Gson();
         String json = gson.toJson(object);
@@ -125,6 +112,42 @@ public class Bot extends TelegramLongPollingBot {
         } catch (IOException e) {
             System.err.println("Ошибка записи в файл: " + e.getMessage());
         }
+    }
+
+    public int checkCombination(PokerGame pokerGame){
+        int numberCombination = 0;
+        List<Card> cards = pokerGame.getPlayer().getHand();
+        cards.addAll(pokerGame.getCommunityCards());
+        for(int i = 0; i<cards.size(); i++){
+            int b = transform(cards.get(i).getValue());
+            if(b<numberCombination){
+                numberCombination = b;
+            }
+        }
+
+
+
+        return numberCombination;
+    }
+
+    public int transform(String a){
+        int b;
+        if(a.equals("J")){
+            b = 11;
+        }
+        else if(a.equals("Q")){
+            b = 12;
+        }
+        else if (a.equals("K")) {
+            b = 13;
+        }
+        else if (a.equals("A")) {
+            b = 14;
+        }
+        else{
+            b = 1;
+        }
+        return b;
     }
 
 }
