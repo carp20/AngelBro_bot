@@ -37,4 +37,8 @@ public class CommunityPokerGame {
     public List<Player> getPlayers() {
         return players;
     }
+
+    public List<Card> PlayerCards(Player player){
+        return player.getHand();
+    }
 }

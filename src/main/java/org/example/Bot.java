@@ -10,11 +10,14 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
 public class Bot extends TelegramLongPollingBot {
 
+    private Map<Long, CommunityPokerGame> games = new HashMap<>();
     Random random = new Random();
     Scanner scanner = new Scanner(System.in);
 
@@ -33,7 +36,7 @@ public class Bot extends TelegramLongPollingBot {
         var msg = update.getMessage();
         var user = msg.getFrom();
         long id = user.getId();
-        saveGson(null);
+        saveGson("~");
         saveGson("Пользователь " + id + " отправил сообщение " + msg.getText());
 
 
@@ -41,7 +44,7 @@ public class Bot extends TelegramLongPollingBot {
             if(msg.getText().equals("/start")) {
                 sendText(id, "Привет, я - AngelBro_bot. Я создан для того, что бы в будущем можно было играть в " +
                         "покер онлайн. Реализация самой простой игры в покер ожидается на версии 0.3(Pre-alfa)." +
-                        "Настоящая версия бота: 0.2.3");
+                        "Настоящая версия бота: 0.2.2");
             }
             else if(msg.getText().equals("/help")) {
                 sendText(id, "В данный момент эта функция недоступна. Причина: отсутствие информации," +
@@ -50,7 +53,7 @@ public class Bot extends TelegramLongPollingBot {
             }
             else if(msg.getText().equals("/play")) {
 
-                if(id == 7287242445L) {
+                if(id == 7519531395L) {
                     PokerGame pokerGame = new PokerGame();
                     pokerGame.startGame();
                     sendText(id, "Игра началась! Общие карты: " + pokerGame.getCommunityCards() + ". " +
@@ -69,13 +72,42 @@ public class Bot extends TelegramLongPollingBot {
                         sendText(id, "Игра закончена! Для новой игры введите /play");
                     }
                 }
+
                 else {
                     sendText(id, "У Вас нету прав на использование этой команды!");
                 }
             }
+
             else if(msg.getText().equals("/getId")){
                 sendText(id, String.valueOf(id));
             }
+
+            else if(msg.getText().equals("/newgame")){
+                games.put(id, new CommunityPokerGame());
+                sendText(id, "Новая игра создана! Игроки могут присоединяться с помощью команды /join.");
+            }
+
+            else if (msg.getText().equals("/join")) {
+                CommunityPokerGame game = games.get(id);
+                if (game != null) {
+                    Player player = new Player(user.getUserName());
+                    game.addPlayer(player);
+                    sendText(id, player.getName() + " присоединился к игре!");
+                } else {
+                    sendText(id, "Сначала создайте игру с помощью /newgame.");
+                }
+            }
+
+            else if (msg.getText().equals("/startgame")) {
+                CommunityPokerGame game = games.get(id);
+                if (game != null && game.getPlayers().size() >= 2) {
+                    game.startGame();
+                    sendText(id, "Игра началась! Общие карты: " + game.getCommunityCards());
+                } else {
+                    sendText(id, "Недостаточно игроков для начала игры.");
+                }
+            }
+
             else{
                 sendText(id,"Неопознанная команда");
             }
@@ -116,18 +148,32 @@ public class Bot extends TelegramLongPollingBot {
 
     public int checkCombination(PokerGame pokerGame){
         int numberCombination = 0;
-        List<Card> cards = pokerGame.getPlayer().getHand();
-        cards.addAll(pokerGame.getCommunityCards());
-        for(int i = 0; i<cards.size(); i++){
-            int b = transform(cards.get(i).getValue());
-            if(b<numberCombination){
-                numberCombination = b;
-            }
-        }
 
+        int numberHighCard = highCard(pokerGame);
 
 
         return numberCombination;
+    }
+
+    public int highCard(PokerGame pokerGame){
+        int numberHighCard = 0;
+        List<Card> cards = pokerGame.getPlayer().getHand();
+        cards.addAll(pokerGame.getCommunityCards());
+        for(int i = 0; i<cards.size(); i++){
+            int b = transform(cards.get(i).getValue()) - 4;
+            if(b>numberHighCard){
+                numberHighCard = b;
+            }
+        }
+        return numberHighCard;
+    }
+
+    public int onePair(PokerGame pokerGame){
+        int numberOnePair = 0;
+        List<Card> cards = pokerGame.getPlayer().getHand();
+        cards.addAll(pokerGame.getCommunityCards());
+
+        return numberOnePair;
     }
 
     public int transform(String a){
