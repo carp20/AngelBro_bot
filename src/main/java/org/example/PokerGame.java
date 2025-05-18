@@ -10,8 +10,8 @@ public class PokerGame {
     private List<Card> communityCards;
 
     public PokerGame() {
-        bot = new Player("bot");
-        player = new Player("player");
+        bot = new Player("Bot");
+        player = new Player("Player");
         deck = new Deck();
         communityCards = new ArrayList<>();
     }

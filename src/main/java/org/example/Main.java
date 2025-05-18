@@ -10,4 +10,5 @@ public class  Main {
         Bot bot = new Bot();
         botsApi.registerBot(new Bot());
     }
+//    -27265, 66, 3920
 }

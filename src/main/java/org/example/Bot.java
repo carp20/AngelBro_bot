@@ -58,6 +58,8 @@ public class Bot extends TelegramLongPollingBot {
                     pokerGame.startGame();
                     sendText(id, "Игра началась! Общие карты: " + pokerGame.getCommunityCards() + ". " +
                             "\nВаши карты: " + pokerGame.getCards(pokerGame.getPlayer()) + ". ");
+                    Saver saver = new Saver(id, pokerGame.getCards(pokerGame.getPlayer()), pokerGame.getCommunityCards(), pokerGame.getCards(pokerGame.getBot()));
+                    gameSaver(saver);
 
                     saveGson("Общие карты: " + pokerGame.getCommunityCards() + ". ");
                     saveGson("Карты пользователя " + id + ": " + pokerGame.getCards(pokerGame.getPlayer()) + ". ");
@@ -194,6 +196,20 @@ public class Bot extends TelegramLongPollingBot {
             b = 1;
         }
         return b;
+    }
+
+    public static void gameSaver(Saver saver){
+        Gson gson = new Gson();
+        String json = gson.toJson(saver);
+        String filePath = "game_status.json";
+
+        try (FileWriter writer = new FileWriter(filePath, true)) {
+            writer.append("\n");
+            writer.write(json);
+            writer.flush();
+        } catch (IOException e) {
+            System.err.println("Ошибка записи в файл: " + e.getMessage());
+        }
     }
 
 }
